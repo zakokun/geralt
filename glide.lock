@@ -1,0 +1,17 @@
+hash: 9848ba2b45e38b8dd001dd197c18a3f8fec5dc1051482c317060e075332fee26
+updated: 2018-12-14T19:07:23.381905048+08:00
+imports:
+- name: github.com/mailru/easyjson
+  version: 60711f1a8329503b04e1c88535f419d0bb440bff
+  subpackages:
+  - buffer
+  - jlexer
+  - jwriter
+- name: github.com/olivere/elastic
+  version: 1619150b007041b6dba8aa447f0e2d151cc2b4c5
+  subpackages:
+  - config
+  - uritemplates
+- name: github.com/pkg/errors
+  version: 059132a15dd08d6704c67711dae0cf35ab991756
+testImports: []

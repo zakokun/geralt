@@ -1,0 +1,5 @@
+package: project/log_shipper_gc
+import:
+- package: github.com/olivere/elastic
+  version: ^6.2.14
+- package: github.com/mailru/easyjson
