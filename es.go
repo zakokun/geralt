@@ -31,5 +31,6 @@ func startES() (err error) {
 		return err
 	}
 	fmt.Printf("Elasticsearch started with code %d and version %s\n", code, info.Version.Number)
+	go dealData()
 	return
 }

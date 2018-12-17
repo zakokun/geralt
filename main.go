@@ -1,13 +1,53 @@
 package main
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+	"net"
+)
 
 func main() {
 	var (
-		err error
+		err  error
+		addr = "127.0.0.1:12315"
 	)
-	if err = startES(); err != nil {
+	//if err = startES(); err != nil {
+	//	panic(err)
+	//}
+
+	udps, err := net.ResolveUDPAddr("udp", addr)
+	if err != nil {
+		fmt.Println("Can't resolve address: ", err)
 		panic(err)
 	}
-	fmt.Println(esClient)
+
+	conn, err := net.ListenUDP("udp", udps)
+	if err != nil {
+		fmt.Println("Error listening:", err)
+		panic(err)
+	}
+	defer conn.Close()
+	for {
+		handleClient(conn)
+	}
+}
+
+func handleClient(conn *net.UDPConn) {
+	var (
+		n   int
+		err error
+	)
+	data := make([]byte, 1024)
+	udpData := make(map[string]interface{})
+	n, _, err = conn.ReadFromUDP(data)
+	if err != nil {
+		fmt.Println("failed to read UDP msg because of ", err.Error())
+		return
+	}
+	err = json.Unmarshal(data[:n], &udpData)
+	if err != nil {
+		fmt.Println("json.Unmarshal() err !", err)
+		return
+	}
+	fmt.Println("read from server:", string(data))
 }
