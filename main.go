@@ -6,15 +6,20 @@ import (
 	"net"
 )
 
+var (
+	channel chan map[string]interface{}
+)
+
 func main() {
 	var (
 		err  error
 		addr = "127.0.0.1:12315"
 	)
-	//if err = startES(); err != nil {
-	//	panic(err)
-	//}
-
+	if err = startES(); err != nil {
+		panic(err)
+	}
+	channel = make(chan map[string]interface{}, 1024)
+	go listenChan()
 	udps, err := net.ResolveUDPAddr("udp", addr)
 	if err != nil {
 		fmt.Println("Can't resolve address: ", err)
@@ -49,5 +54,6 @@ func handleClient(conn *net.UDPConn) {
 		fmt.Println("json.Unmarshal() err !", err)
 		return
 	}
-	fmt.Println("read from server:", string(data))
+	channel <- udpData
+	fmt.Println("read from server:", udpData)
 }
