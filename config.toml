@@ -1,0 +1,3 @@
+Apps = ["cpp", "php"]
+TimeField = "@timestamp"
+TypeName = "base"

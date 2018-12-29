@@ -54,18 +54,23 @@ func startES() (err error) {
 
 func listenChan() {
 	var (
-		err       error
-		ok        bool
-		app       interface{}
-		indexName string
-		ctx       = context.Background()
+		err                error
+		ok                 bool
+		app                interface{}
+		indexName, appName string
+		ctx                = context.Background()
 	)
 	for i := range channel {
 		if app, ok = i["app"]; !ok {
 			log.Printf("channel get illegal data %v", i)
 			continue
 		}
-		indexName, err = setIndexName(app.(string))
+		appName, ok = app.(string)
+		if !ok {
+			log.Printf("app field must be string  data:%v", app)
+			continue
+		}
+		indexName, err = setIndexName(appName)
 		if err != nil {
 			log.Printf("setIndexName(%v) err(%v)", app, err)
 			continue
