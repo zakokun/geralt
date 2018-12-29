@@ -1,6 +1,8 @@
-hash: a7696dc0274cca97cc617bcb0670dd5dc5518cc513068b31d368e2c054ac4a89
-updated: 2018-12-27T15:46:06.518041237+08:00
+hash: e2c113f02cb3278a16c9cec84e4ec04f0aa7bf8ce19dccc83fa12c01da977435
+updated: 2018-12-27T18:44:48.180334827+08:00
 imports:
+- name: github.com/BurntSushi/toml
+  version: 3012a1dbe2e4bd1391d42b32f0577cb7bbc7f005
 - name: github.com/mailru/easyjson
   version: 60711f1a8329503b04e1c88535f419d0bb440bff
   subpackages:

@@ -16,20 +16,18 @@ var (
 )
 
 const (
-	BaseType = "base"
-	CppName  = "cpp"
-	PHPName  = "php"
-	Mapping  = `
+	Mapping = `
 {
 	"settings":{
 		"number_of_shards": 1,
 		"number_of_replicas": 0
 	},
 	"mappings":{
-		"base":{
+		"%s":{
 			"properties":{
-				"@timestamp":{
-					"type":"date"
+				"%s":{
+					"type":"date",
+            		"format": "strict_date_optional_time||epoch_millis"
 				}
 			}
 		}
@@ -98,21 +96,23 @@ func setIndexName(app string) (name string, err error) {
 	var (
 		day = time.Now().Format("2006-01-02")
 	)
-	if app == CppName || app == PHPName {
-		name = app + "-" + day
-	} else {
-		err = fmt.Errorf("app nsetIndexame not register yet")
+	for _, a := range conf.Apps {
+		if app == a {
+			name = app + "-" + day
+			return
+		}
 	}
+	err = fmt.Errorf("app:%s not register yet", app)
 	return
 }
 
 // setIndex 创建索引
 func setIndex(name string) (err error) {
-	_, err = esClient.CreateIndex(name).BodyString(Mapping).Do(context.Background())
+	_, err = esClient.CreateIndex(name).BodyString(fmt.Sprintf(Mapping, conf.TypeField, conf.TimeField)).Do(context.Background())
 	return
 }
 
 func sendLog(ctx context.Context, idx string, d map[string]interface{}) (idxRet *elastic.IndexResponse, err error) {
 	d["@timestamp"] = time.Now().Unix() * 1000
-	return esClient.Index().Index(idx).Type(BaseType).BodyJson(d).Do(ctx)
+	return esClient.Index().Index(idx).Type(conf.TypeField).BodyJson(d).Do(ctx)
 }

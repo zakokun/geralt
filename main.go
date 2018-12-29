@@ -15,6 +15,9 @@ func main() {
 		err  error
 		addr = "127.0.0.1:12315"
 	)
+	if err = initConfig(); err != nil {
+		panic(err)
+	}
 	if err = startES(); err != nil {
 		panic(err)
 	}

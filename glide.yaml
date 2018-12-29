@@ -5,3 +5,5 @@ import:
 - package: github.com/mailru/easyjson
 - package: gopkg.in/olivere/elastic.v5
   version: ^6.2.14
+- package: github.com/BurntSushi/toml
+  version: ^0.3.1
